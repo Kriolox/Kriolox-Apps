@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#171923"><title>Kriolox — Avatar 3D corrigido</title>
+<style>
+:root{--bg:#101116;--panel:#1b1d27;--panel2:#242735;--line:#343746;--text:#f4f5fa;--muted:#a5a9bb;--blue:#5865f2;--cyan:#21c7c9;--pink:#ed5b9b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}button,input{font:inherit}button{cursor:pointer;border:0;color:white;background:var(--blue);border-radius:12px;padding:11px 15px;font-weight:700}button.secondary{background:var(--panel2);border:1px solid var(--line)}button:disabled{opacity:.45}input{width:100%;background:#11131a;border:1px solid var(--line);border-radius:11px;padding:13px;color:white;outline:none}input:focus{border-color:var(--blue)}.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:12px}.brand{font-size:28px;font-weight:900;letter-spacing:-1px}.brand span{color:var(--cyan)}#auth{min-height:100dvh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 20%,#29305a,transparent 50%),var(--bg)}.authbox{width:min(420px,100%);background:#1a1c27;border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 20px 70px #0008}.authbox h1{margin:8px 0}.authbox .field{margin:13px 0}.authactions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.authmsg{min-height:22px;color:#ff829c;font-size:13px;margin-top:10px}#app{min-height:100dvh;padding-bottom:76px}.topbar{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:#171923;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}.topbar .brand{font-size:23px}.page{display:none;padding:18px;max-width:1050px;margin:auto}.page.active{display:block}.welcome{padding:22px;border-radius:20px;background:linear-gradient(120deg,#333e91,#252c59 60%,#174b58);margin-bottom:18px}.welcome h1{margin:0 0 5px;font-size:27px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px}.sectionhead h2{margin:0}.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px}.tile .emoji{font-size:28px}.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#191b25;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 4px max(7px,env(safe-area-inset-bottom))}.bottomnav button{background:transparent;color:var(--muted);padding:7px 2px;font-size:11px;border-radius:9px}.bottomnav button b{display:block;font-size:19px;margin-bottom:2px}.bottomnav button.active{color:white;background:#30344b}.profilehead{display:flex;gap:15px;align-items:center}.avatarmini{width:74px;height:74px;border-radius:18px;background:#343b69;display:grid;place-items:center;font-size:38px}.profilegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.chatbox{height:48vh;min-height:250px;overflow:auto;background:#12141c;border:1px solid var(--line);border-radius:14px;padding:12px}.bubble{padding:9px 12px;background:#292d40;border-radius:12px;margin:7px 0;max-width:85%;width:max-content}.bubble.me{margin-left:auto;background:#414bb0}.chatrow{display:flex;gap:8px;margin-top:10px}.chatrow input{flex:1}.marketfilters{display:flex;gap:7px;overflow:auto;padding:4px 0 12px}.marketfilters button{white-space:nowrap;padding:9px 12px}.marketgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.itemcard{background:var(--panel);border:1px solid var(--line);border-radius:15px;overflow:hidden}.itemart{height:116px;display:grid;place-items:center;background:linear-gradient(140deg,#30344d,#1d4552);font-size:48px}.iteminfo{padding:11px}.iteminfo strong{display:block}.iteminfo button{width:100%;margin-top:9px;padding:9px}.editorlayout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.avatarstage{height:380px;background:radial-gradient(circle at 50% 40%,#333a59,#171923 72%);border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:pan-y}.avatarstage:after{content:'ARRASTE PARA GIRAR';position:absolute;bottom:12px;color:#aab0c7;font-size:10px;letter-spacing:2px}
+.avatarstage{perspective:900px;touch-action:none;background:radial-gradient(circle at 50% 40%,#333a59,#171923 72%)}#avatar3d{display:block;width:100%;height:100%;min-height:320px;max-width:440px;flex:1;touch-action:none}
+.r6{position:relative;width:160px;height:270px;transform-style:preserve-3d;--skin:#e6b38c;--shirt:#4167c9;--pants:#30394e;will-change:transform}
+.part{position:absolute;transform-style:preserve-3d;background:transparent}
+.head{width:66px;height:66px;left:47px;top:0;--part-color:var(--skin);--depth:60px}
+.torso{width:88px;height:94px;left:36px;top:72px;--part-color:var(--shirt);--depth:36px}
+.arm{width:34px;height:91px;top:75px;--part-color:var(--skin);--depth:30px}
+.arm.left{left:0}.arm.right{right:0}
+.leg{width:40px;height:94px;top:170px;--part-color:var(--pants);--depth:36px}
+.leg.left{left:37px}.leg.right{right:37px}
+.face3d{position:absolute;display:block;box-sizing:border-box;background:var(--part-color);border:1px solid #0003;box-shadow:inset -7px -7px 10px #0002,inset 5px 5px 9px #ffffff20;backface-visibility:visible}
+.face3d.front,.face3d.back{width:100%;height:100%;left:0;top:0}
+.face3d.front{transform:translateZ(calc(var(--depth)/2))}
+.face3d.back{transform:rotateY(180deg) translateZ(calc(var(--depth)/2));filter:brightness(.72)}
+.face3d.left,.face3d.right{width:var(--depth);height:100%;top:0}
+.face3d.left{left:calc(var(--depth)/-2);transform:rotateY(-90deg) translateZ(calc(var(--depth)/2));filter:brightness(.82)}
+.face3d.right{right:calc(var(--depth)/-2);transform:rotateY(90deg) translateZ(calc(var(--depth)/2));filter:brightness(.9)}
+.face3d.top,.face3d.bottom{width:100%;height:var(--depth);left:0}
+.face3d.top{top:calc(var(--depth)/-2);transform:rotateX(90deg) translateZ(calc(var(--depth)/2))}
+.face3d.bottom{bottom:calc(var(--depth)/-2);transform:rotateX(-90deg) translateZ(calc(var(--depth)/2));filter:brightness(.65)}
+.head .face{position:absolute;z-index:3;top:25px;left:14px;font-size:23px;letter-spacing:5px;color:#27222a;transform:translateZ(31px)}
+.avatar-accessory{position:absolute;transform-style:preserve-3d;pointer-events:none}
+.avatar-hair{left:43px;top:-8px;width:74px;height:28px;background:linear-gradient(145deg,#70452b,#24170f);border:2px solid #20140e;border-radius:18px 18px 7px 7px;transform:translateZ(2px);box-shadow:inset 8px 4px #ffffff18,0 3px 5px #0005}
+.avatar-hair:before,.avatar-hair:after{content:"";position:absolute;background:#3b2418;border:1px solid #20140e;width:18px;height:26px;top:12px;border-radius:4px 4px 10px 10px}
+.avatar-hair:before{left:3px}.avatar-hair:after{right:3px}
+.avatar-crown{left:55px;top:-24px;width:50px;height:30px;color:#ffd84b;font-size:35px;line-height:30px;text-align:center;text-shadow:0 2px #946b00,0 4px 6px #0008;transform:translateZ(34px)}
+.avatar-glasses{left:50px;top:24px;width:60px;height:20px;display:flex;gap:5px;transform:translateZ(34px)}
+.avatar-glasses:before,.avatar-glasses:after{content:"";width:24px;height:15px;border:3px solid #171923;background:#17233399;border-radius:5px}
+.classic-mark{position:absolute;left:8px;top:22px;width:72px;height:42px;border:2px solid #ffffff66;border-radius:4px;transform:translateZ(19px);background:repeating-linear-gradient(135deg,#ffffff22 0 5px,transparent 5px 10px);pointer-events:none}
+.editorcontrols{display:flex;flex-direction:column;gap:10px}.controlgroup{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px}.controlgroup h3{margin:0 0 10px;font-size:14px}.swatches{display:flex;flex-wrap:wrap;gap:8px}.swatch{width:34px;height:34px;border-radius:50%;border:2px solid #ffffff55;padding:0}.swatch.selected{outline:2px solid white;outline-offset:2px}.closet{display:flex;gap:8px;flex-wrap:wrap}.closet button{font-size:12px;padding:9px}.notice{background:#292d40;border:1px solid #424968;border-radius:12px;padding:12px;margin-top:12px;font-size:12px;color:#cbd0e6}
+.drawer{position:fixed;z-index:20;top:65px;left:10px;width:min(300px,88vw);padding:14px;background:#1b1d27;border:1px solid var(--line);border-radius:16px;box-shadow:0 15px 50px #000b;display:flex;flex-direction:column;gap:9px}.drawer a{padding:12px;background:#252938;border-radius:10px;color:white;text-decoration:none;font-weight:700}.drawer.hidden{display:none!important}@media(max-width:650px){.editorlayout{grid-template-columns:1fr}.avatarstage{height:340px}.profilegrid{grid-template-columns:1fr 1fr}.page{padding:14px}.tiles{gap:9px}.tile{padding:12px}}
+</style></head><body>
+<section id="auth"><div class="authbox"><div class="brand">KRIO<span>LOX</span></div><p class="muted">Sua plataforma. Seu avatar. Seu espaço.</p><h1 id="authTitle">Bem-vindo de volta</h1><div class="field"><label class="small muted">Nome de usuário</label><input id="username" maxlength="20" autocomplete="username" placeholder="Seu nome"></div><div class="field"><label class="small muted">Senha</label><input id="password" type="password" autocomplete="current-password" placeholder="Sua senha"></div><label class="small"><input id="remember" type="checkbox" checked style="width:auto;vertical-align:middle"> Manter conectado neste aparelho</label><div class="authactions"><button id="loginBtn">Entrar</button><button id="createBtn" class="secondary">Criar conta</button></div><div id="authMsg" class="authmsg"></div><p class="small muted">Protótipo: seus dados ficam salvos somente neste navegador/aparelho. Não use uma senha importante.</p></div></section>
+<section id="app" class="hidden"><header class="topbar"><button class="secondary" id="menuBtn">☰</button><div class="brand">KRIO<span>LOX</span></div><button class="secondary" id="logoutBtn">Sair ↗</button></header><aside id="drawer" class="drawer hidden"><button class="secondary" onclick="closeDrawer()">✕ Fechar</button><button onclick="go('home');closeDrawer()">Início</button><button onclick="go('modelshop');closeDrawer()">Loja de modelos</button><button onclick="go('wallet');closeDrawer()">Carteira SMM</button><a href="Kriolox_Studio_Horizontal_Importacao.html">Kriolox Studio ↗</a><p class="small muted">SMM é moeda virtual demonstrativa.</p></aside>
+<main>
+<section id="home" class="page active"><div class="welcome"><h1>Olá, <span id="helloName">jogador</span>! 👋</h1><div class="muted">Bem-vindo ao Kriolox.</div></div><div class="sectionhead"><h2>Seu espaço</h2></div><div class="tiles"><div class="tile"><div class="emoji">🧍</div><strong>Seu avatar</strong><p class="small muted">Personalize seu personagem R6.</p><button onclick="go('editor')">Editar avatar</button></div><div class="tile"><div class="emoji">🛍️</div><strong>Loja Kriolox</strong><p class="small muted">Roupas, cabelos e acessórios.</p><button onclick="go('shop')">Explorar loja</button></div><div class="tile"><div class="emoji">💬</div><strong>Mensagens</strong><p class="small muted">Converse nesta demonstração.</p><button onclick="go('chat')">Abrir chat</button></div><div class="tile"><div class="emoji">👤</div><strong>Seu perfil</strong><p class="small muted">Veja sua conta e aparência.</p><button onclick="go('profile')">Ver perfil</button></div></div></section>
+<section id="chat" class="page"><h2>Chat</h2><p class="muted small">Chat local de demonstração: as mensagens ficam neste aparelho.</p><div id="chatbox" class="chatbox"></div><div class="chatrow"><input id="chatInput" placeholder="Escreva uma mensagem..." maxlength="300"><button id="sendBtn">Enviar</button></div></section>
+<section id="profile" class="page"><h2>Perfil</h2><div class="panel profilehead"><div class="avatarmini">🧍</div><div><h2 id="profileName" style="margin:0"></h2><div class="muted small" id="profileId"></div><div class="small muted">Membro do Kriolox</div></div></div><div class="profilegrid"><div class="panel"><strong>Personalizar</strong><p class="small muted">Mude cores e roupas do seu avatar.</p><button onclick="go('editor')">Editar personagem</button></div><div class="panel"><strong>Guardar estilo</strong><p class="small muted">Sua aparência é salva neste dispositivo.</p><button class="secondary" id="saveLook">Salvar aparência</button></div></div></section>
+<section id="shop" class="page"><h2>Loja Kriolox</h2><p class="muted small">Experimente modelos 3D no avatar: moletom com capuz e bolso, jaqueta com zíper, calça cargo com bolsos, jeans, cabelo, coroa e óculos.</p><div class="marketfilters" id="filters"><button data-cat="Todos">Todos</button><button class="secondary" data-cat="Camisas">Camisas</button><button class="secondary" data-cat="Calças">Calças</button><button class="secondary" data-cat="Cabelos">Cabelos</button><button class="secondary" data-cat="Acessórios">Acessórios</button><button class="secondary" data-cat="Clássicas 2D">Clássicas 2D</button></div><div id="marketgrid" class="marketgrid"></div></section>
+<section id="editor" class="page"><h2>Editor de personagem</h2><p class="muted small">Avatar clássico R6. Arraste o personagem para girar.</p><div class="editorlayout"><div id="avatarstage" class="avatarstage"><canvas id="avatar3d" aria-label="Avatar 3D R6"></canvas></div><div class="editorcontrols"><div class="controlgroup"><h3>Cor da pele</h3><div id="skinColors" class="swatches"></div></div><div class="controlgroup"><h3>Cor da camisa</h3><div id="shirtColors" class="swatches"></div></div><div class="controlgroup"><h3>Cor da calça</h3><div id="pantsColors" class="swatches"></div></div><div class="controlgroup"><h3>Roupas e acessórios equipados</h3><div id="equipped" class="closet"><span class="muted small">Nenhum item equipado.</span></div></div><button id="saveAvatar">Salvar personagem</button><button class="secondary" onclick="go('shop')">Abrir loja</button></div></div></section>
+<section id="modelshop" class="page"><h2>Loja de modelos</h2><p class="muted small">Modelos publicados no catálogo deste protótipo.</p><div id="publishedModels" class="marketgrid"></div></section>
+<section id="wallet" class="page"><h2>Carteira SMM</h2><div class="panel"><div class="small muted">Saldo SMM</div><div id="smmBalance" style="font-size:32px;font-weight:900">0</div><div class="small muted">ID: <span id="walletId"></span></div></div><h3>Comprar SMM</h3><div class="tiles"><div class="tile"><b>80 SMM</b><p>R$ 10,00</p><button onclick="demoBuy()">Comprar</button></div><div class="tile"><b>400 SMM</b><p>R$ 100,00</p><button onclick="demoBuy()">Comprar</button></div><div class="tile"><b>1.000 SMM</b><p>R$ 500,00</p><button onclick="demoBuy()">Comprar</button></div></div><p class="notice">Compras reais ainda não estão ativadas. Nenhum pagamento será cobrado.</p></section>
+</main><nav class="bottomnav"><button class="active" data-page="home"><b>⌂</b>Início</button><button data-page="chat"><b>▤</b>Chat</button><button data-page="shop"><b>▦</b>Loja</button><button data-page="editor"><b>♙</b>Avatar</button><button data-page="profile"><b>☻</b>Perfil</button></nav></section>
+<script>
+const $=id=>document.getElementById(id);const DB='kriolox_accounts_v1',SESSION='kriolox_session_v1';let current=null,look={skin:'#e6b38c',shirt:'#4167c9',pants:'#30394e',items:[]};
+function accounts(){try{return JSON.parse(localStorage.getItem(DB)||'[]')}catch{return []}}function saveAccounts(a){localStorage.setItem(DB,JSON.stringify(a))}function nextId(a){return String(a.reduce((m,x)=>Math.max(m,Number(x.id)||0),0)+1).padStart(10,'0')}
+function showApp(user){current=user;$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('helloName').textContent=user.name;$('profileName').textContent=user.name;$('profileId').textContent='ID: '+user.id;look=Object.assign(look,user.look||{});applyLook();renderEquipped();updateWallet();renderPublished();go('home')}
+function authError(t){$('authMsg').textContent=t}function login(){const n=$('username').value.trim(),p=$('password').value;if(!n||!p)return authError('Preencha o usuário e a senha.');const u=accounts().find(x=>x.name.toLowerCase()===n.toLowerCase()&&x.pass===p);if(!u)return authError('Usuário ou senha incorretos.');if($('remember').checked)localStorage.setItem(SESSION,u.id);else localStorage.removeItem(SESSION);showApp(u)}function create(){const n=$('username').value.trim(),p=$('password').value;if(n.length<3)return authError('O nome precisa ter pelo menos 3 caracteres.');if(p.length<4)return authError('A senha precisa ter pelo menos 4 caracteres.');const a=accounts();if(a.some(x=>x.name.toLowerCase()===n.toLowerCase()))return authError('Esse nome já está em uso.');const u={name:n,pass:p,id:nextId(a),look:{...look}};a.push(u);saveAccounts(a);if($('remember').checked)localStorage.setItem(SESSION,u.id);authError('');showApp(u)}
+$('loginBtn').onclick=login;$('createBtn').onclick=create;$('password').addEventListener('keydown',e=>{if(e.key==='Enter')login()});$('logoutBtn').onclick=()=>{localStorage.removeItem(SESSION);current=null;$('app').classList.add('hidden');$('auth').classList.remove('hidden');$('password').value='';authError('Você saiu da sua conta.')};
+function go(id){if(id==='wallet')updateWallet();if(id==='modelshop')renderPublished();document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo(0,0);if(id==='editor'){requestAnimationFrame(()=>requestAnimationFrame(render3DAvatar))}}document.querySelectorAll('.bottomnav button').forEach(b=>b.onclick=()=>go(b.dataset.page));
+const items=[{name:'Moletom azul com bolso',cat:'Camisas',icon:'🧥',price:'Grátis',type:'shirt',color:'#4167c9'},{name:'Camiseta preta estampada',cat:'Camisas',icon:'👕',price:'Grátis',type:'shirt',color:'#333846'},{name:'Jaqueta vermelha',cat:'Camisas',icon:'🥼',price:'Grátis',type:'shirt',color:'#b83f50'},{name:'Calça cargo urbana',cat:'Calças',icon:'👖',price:'Grátis',type:'pants',color:'#30394e'},{name:'Jeans azul',cat:'Calças',icon:'👖',price:'Grátis',type:'pants',color:'#386b9b'},{name:'Cabelo castanho 3D',cat:'Cabelos',icon:'💇',price:'Grátis',type:'hair'},{name:'Coroa dourada 3D',cat:'Acessórios',icon:'👑',price:'Grátis',type:'accessory'},{name:'Óculos pretos 3D',cat:'Acessórios',icon:'🕶️',price:'Grátis',type:'accessory'},{name:'Camisa clássica',cat:'Clássicas 2D',icon:'🎽',price:'Grátis',type:'shirt',color:'#a64d79'},{name:'Calça clássica',cat:'Clássicas 2D',icon:'👖',price:'Grátis',type:'pants',color:'#386b65'}];let activeCat='Todos';
+function renderShop(){const list=items.filter(i=>activeCat==='Todos'||i.cat===activeCat);$('marketgrid').innerHTML=list.map((i)=>`<article class="itemcard"><div class="itemart">${i.icon}</div><div class="iteminfo"><strong>${i.name}</strong><span class="small muted">${i.cat} · ${i.price}</span><button data-item="${items.indexOf(i)}">Experimentar</button></div></article>`).join('');document.querySelectorAll('[data-item]').forEach(b=>b.onclick=()=>equip(items[+b.dataset.item]))}document.querySelectorAll('#filters button').forEach(b=>b.onclick=()=>{activeCat=b.dataset.cat;document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('secondary',x!==b));renderShop()});
+
+function equip(i){
+  if(i.type==='shirt')look.shirt=i.color;
+  if(i.type==='pants')look.pants=i.color;
+  if(i.type==='hair')look.items=look.items.filter(n=>!n.startsWith('Cabelo'));
+  if(i.type==='accessory')look.items=look.items.filter(n=>!n.startsWith('Coroa')&&!n.startsWith('Óculos'));
+  if(!look.items.includes(i.name))look.items.push(i.name);
+  applyLook();renderEquipped();go('editor');
+}
+function renderEquipped(){
+  $('equipped').innerHTML=look.items.length?look.items.map((x,i)=>`<button class="secondary" data-remove="${i}">✕ ${x}</button>`).join(''):'<span class="muted small">Nenhum item equipado.</span>';
+  $('equipped').querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{look.items.splice(+b.dataset.remove,1);applyLook();renderEquipped()});
+}
+const palettes={skin:['#f5d0ad','#e6b38c','#bd805e','#8e5b43','#593a32'],shirt:['#4167c9','#d64e5b','#2e9d83','#333846','#a64d79','#e3a52c','#eeeeee'],pants:['#30394e','#777d8e','#242424','#386b65','#72523e','#c4c4c4']};function makeSwatches(id,key){$(id).innerHTML=palettes[key].map(c=>`<button class="swatch" style="background:${c}" data-color="${c}" aria-label="Selecionar cor"></button>`).join('');$(id).querySelectorAll('button').forEach(b=>b.onclick=()=>{look[key]=b.dataset.color;applyLook();markSwatches()})}function markSwatches(){['skin','shirt','pants'].forEach(k=>document.querySelectorAll(`[data-color]`).forEach(b=>{if(palettes[k].includes(b.dataset.color)&&b.parentElement.id===({skin:'skinColors',shirt:'shirtColors',pants:'pantsColors'}[k]))b.classList.toggle('selected',b.dataset.color===look[k])}))}function build3DAvatar(){document.querySelectorAll('#r6 .part').forEach(p=>{if(p.querySelector('.face3d'))return;const face=p.querySelector('.face');['front','back','left','right','top','bottom'].forEach(side=>{const f=document.createElement('span');f.className='face3d '+side;p.appendChild(f)});if(face)p.appendChild(face)})}
+
+let avatarRotation=0,avatarTilt=-0.06,avatarCanvas=null,avatarCtx=null;
+function hexRgb(hex){if(/^rgb/i.test(hex)){const m=hex.match(/[\d.]+/g)||[];return [+(m[0]||0),+(m[1]||0),+(m[2]||0)]}const n=parseInt(String(hex).replace('#',''),16);return Number.isFinite(n)?[(n>>16)&255,(n>>8)&255,n&255]:[100,110,140]}
+function shade(hex,k){const c=hexRgb(hex);return `rgb(${c.map(v=>Math.max(0,Math.min(255,Math.round(v*k)))).join(',')})`}
+function drawBox(ctx,x,y,z,w,h,d,color,rot,details=[]){
+  const verts=[[-w/2,-h/2,-d/2],[w/2,-h/2,-d/2],[w/2,h/2,-d/2],[-w/2,h/2,-d/2],[-w/2,-h/2,d/2],[w/2,-h/2,d/2],[w/2,h/2,d/2],[-w/2,h/2,d/2]];
+  const faces=[[0,1,2,3,0.78],[4,5,6,7,1.08],[0,4,7,3,0.88],[1,5,6,2,0.72],[0,1,5,4,0.96],[3,2,6,7,0.62]];
+  const transformed=verts.map(v=>{let X=v[0]+x,Y=v[1]+y,Z=v[2]+z;let a=X*Math.cos(rot)-Z*Math.sin(rot),b=X*Math.sin(rot)+Z*Math.cos(rot);let c=Y*Math.cos(avatarTilt)-b*Math.sin(avatarTilt),zz=Y*Math.sin(avatarTilt)+b*Math.cos(avatarTilt);return [a,c,zz]});
+  const cam=7.5,scale=Math.min(ctx.canvas.width/5.1,ctx.canvas.height/7.8);
+  const pts=transformed.map(v=>{let f=cam/(cam-v[2]/2.4);return [ctx.canvas.width/2+v[0]*scale*f,ctx.canvas.height*0.51-v[1]*scale*f,v[2]]});
+  const polys=faces.map(f=>({f,depth:f.slice(0,4).reduce((s,i)=>s+pts[i][2],0)/4,k:f[4]})).sort((a,b)=>a.depth-b.depth);
+  polys.forEach(({f,k})=>{ctx.beginPath();f.slice(0,4).forEach((id,j)=>{const p=pts[id];if(j===0)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1])});ctx.closePath();ctx.fillStyle=shade(color,k);ctx.fill();ctx.strokeStyle='#11182766';ctx.lineWidth=1.2;ctx.stroke()});
+}
+function render3DAvatar(){
+  const c=$('avatar3d');if(!c)return;
+  const rect=c.getBoundingClientRect();if(!rect.width||!rect.height)return;
+  const dpr=Math.min(window.devicePixelRatio||1,2),w=Math.round(rect.width*dpr),h=Math.round(rect.height*dpr);
+  if(c.width!==w||c.height!==h){c.width=w;c.height=h}
+  const ctx=c.getContext('2d');if(!ctx){return}ctx.clearRect(0,0,w,h);
+  const skin=look.skin||'#e6b38c',shirt=look.shirt||'#4167c9',pants=look.pants||'#30394e';
+  const has=n=>look.items.some(x=>x.toLowerCase().includes(n));
+  const hoodie=has('moletom'),jacket=has('jaqueta'),cargo=has('cargo'),jeans=has('jeans');
+  // soft floor shadow
+  ctx.save();ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(w/2,h*.91,w*.19,h*.025,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  // legs, feet, torso and arms: each is a real 3D cuboid projected with perspective
+  drawBox(ctx,-.32,-1.34,0,.58,1.28,.62,pants,avatarRotation);
+  drawBox(ctx,.32,-1.34,0,.58,1.28,.62,pants,avatarRotation);
+  // shoes
+  drawBox(ctx,-.32,-2.02,.08,.61,.25,.82,'#252a35',avatarRotation);
+  drawBox(ctx,.32,-2.02,.08,.61,.25,.82,'#252a35',avatarRotation);
+  drawBox(ctx,0,.0,0,1.28,1.35,.62,shirt,avatarRotation);
+  drawBox(ctx,-.82,.02,0,.48,1.28,.54,skin,avatarRotation);
+  drawBox(ctx,.82,.02,0,.48,1.28,.54,skin,avatarRotation);
+  // garment-specific geometry and details
+  if(hoodie){
+    drawBox(ctx,0,.91,-.32,.72,.5,.34,shade(shirt,.72),avatarRotation);
+    drawBox(ctx,0,-.32,.325,.62,.27,.045,shade(shirt,.72),avatarRotation);
+    drawBox(ctx,-.43,.05,.29,.13,.65,.07,shade(shirt,.76),avatarRotation);
+    drawBox(ctx,.43,.05,.29,.13,.65,.07,shade(shirt,.76),avatarRotation);
+  } else if(jacket){
+    drawBox(ctx,0,.0,.325,.055,1.25,.035,'#dedede',avatarRotation);
+    drawBox(ctx,-.43,.12,.33,.18,.45,.04,shade(shirt,.7),avatarRotation);
+    drawBox(ctx,.43,.12,.33,.18,.45,.04,shade(shirt,.7),avatarRotation);
+  } else {
+    drawBox(ctx,0,-.08,.325,.48,.12,.035,shade(shirt,1.25),avatarRotation);
+  }
+  if(cargo){
+    drawBox(ctx,-.34,-1.25,.33,.34,.43,.07,shade(pants,.78),avatarRotation);
+    drawBox(ctx,.34,-1.25,.33,.34,.43,.07,shade(pants,.78),avatarRotation);
+  }
+  if(jeans){
+    drawBox(ctx,0,-.72,.32,.025,1.05,.025,shade(pants,1.35),avatarRotation);
+    drawBox(ctx,0,-.68,.33,.72,.035,.025,'#202b3a',avatarRotation);
+  }
+  // neck and square R6 head
+  drawBox(ctx,0,.82,0,.34,.28,.34,skin,avatarRotation);
+  drawBox(ctx,0,1.48,0,.94,.96,.88,skin,avatarRotation);
+  // face details are attached to the front of the head
+  const faceZ=.455,sc=Math.min(w/5.1,h/7.8);
+  function faceDot(x,y,r,color){let X=x*Math.cos(avatarRotation),Z=x*Math.sin(avatarRotation);let f=7.5/(7.5-Z/2.4);ctx.beginPath();ctx.arc(w/2+X*sc*f,h*.51-(y+1.48)*sc*f,r*dpr,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
+  if(Math.cos(avatarRotation)>-.25){
+    faceDot(-.19,1.56,3.5*dpr,'#24232a');faceDot(.19,1.56,3.5*dpr,'#24232a');
+    ctx.strokeStyle='#33232a';ctx.lineWidth=2.5*dpr;ctx.beginPath();ctx.arc(w/2,h*.51-(1.32)*sc,8*dpr,.15,Math.PI-.15);ctx.stroke();
+  }
+  // 3D hair cap and side locks
+  if(has('cabelo')){
+    drawBox(ctx,0,2.0,-.04,1.02,.28,.98,'#4a2b1b',avatarRotation);
+    drawBox(ctx,-.43,1.77,-.02,.16,.42,.82,'#3a2118',avatarRotation);
+    drawBox(ctx,.43,1.77,-.02,.16,.42,.82,'#3a2118',avatarRotation);
+  }
+  // crown: base and raised gold points
+  if(has('coroa')){
+    drawBox(ctx,0,2.06,.02,.72,.12,.68,'#e4ad22',avatarRotation);
+    [-.28,-.1,.1,.28].forEach((x,i)=>drawBox(ctx,x,2.23+(i%2)*.1,.02,.09,.28,.09,'#ffd84b',avatarRotation));
+  }
+  // glasses: two dark 3D rims with bridge
+  if(has('óculos')){
+    drawBox(ctx,-.19,1.57,.47,.31,.2,.09,'#20242d',avatarRotation);
+    drawBox(ctx,.19,1.57,.47,.31,.2,.09,'#20242d',avatarRotation);
+    drawBox(ctx,0,1.58,.49,.12,.045,.08,'#20242d',avatarRotation);
+  }
+}
+function applyLook(){
+  markSwatches();
+  requestAnimationFrame(render3DAvatar);
+}
+function saveLook(){if(!current)return;const a=accounts(),u=a.find(x=>x.id===current.id);if(u){u.look={...look};saveAccounts(a);current=u;$('authMsg').textContent='';alert('Aparência salva neste aparelho!')}}$('saveAvatar').onclick=saveLook;$('saveLook').onclick=saveLook;makeSwatches('skinColors','skin');makeSwatches('shirtColors','shirt');makeSwatches('pantsColors','pants');renderShop();
+let drag=false,lastX=0;const stage=$('avatarstage');stage.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;stage.setPointerCapture(e.pointerId)});stage.addEventListener('pointermove',e=>{if(!drag)return;avatarRotation+=(e.clientX-lastX)*.012;lastX=e.clientX;render3DAvatar()});stage.addEventListener('pointerup',()=>drag=false);stage.addEventListener('pointercancel',()=>drag=false);window.addEventListener('resize',render3DAvatar);
+function send(){const v=$('chatInput').value.trim();if(!v)return;const d=document.createElement('div');d.className='bubble me';d.textContent=v;$('chatbox').appendChild(d);$('chatInput').value='';$('chatbox').scrollTop=$('chatbox').scrollHeight}$('sendBtn').onclick=send;$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+
+const WALLET='kriolox_smm_wallet_v1',MARKET='kriolox_studio_models_v1';
+function getWallet(){try{return JSON.parse(localStorage.getItem(WALLET)||'{}')}catch{return {}}}
+function updateWallet(){if(!current)return;let w=getWallet();if(!w['0000000001']){w['0000000001']=9999999999;localStorage.setItem(WALLET,JSON.stringify(w))}$('smmBalance').textContent=Number(w[current.id]||0).toLocaleString('pt-BR')+' SMM';$('walletId').textContent=current.id}
+function demoBuy(){alert('Compra real ainda não ativada. Nenhum pagamento foi realizado.')}
+function closeDrawer(){$('drawer').classList.add('hidden')}
+$('menuBtn').onclick=()=>$('drawer').classList.toggle('hidden');
+function renderPublished(){let a=[];try{a=JSON.parse(localStorage.getItem(MARKET)||'[]')}catch{};$('publishedModels').innerHTML=a.length?a.map(x=>`<article class="itemcard"><div class="itemart">📦</div><div class="iteminfo"><strong>${String(x.name||'Modelo').replace(/[<>]/g,'')}</strong><span class="small muted">${x.price===0?'Grátis':x.price+' SMM'}</span></div></article>`).join(''):'<div class="panel muted">Ainda não há modelos publicados.</div>'}
+
+try{const sid=localStorage.getItem(SESSION);if(sid){const u=accounts().find(x=>x.id===sid);if(u)showApp(u)}}catch{}
+</script></body></html>
