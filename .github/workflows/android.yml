@@ -24,6 +24,13 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
+      - name: Bundle Three.js locally for offline WebView imports
+        run: |
+          mkdir -p /tmp/three-package KrioloxStudio/app/src/main/assets/three
+          curl -L --fail --silent --show-error https://registry.npmjs.org/three/-/three-0.160.0.tgz | tar -xz -C /tmp/three-package --strip-components=1
+          mkdir -p KrioloxStudio/app/src/main/assets/three/build KrioloxStudio/app/src/main/assets/three/examples
+          cp /tmp/three-package/build/three.module.js KrioloxStudio/app/src/main/assets/three/build/
+          cp -R /tmp/three-package/examples/jsm KrioloxStudio/app/src/main/assets/three/examples/
       - name: Build APKs
         run: gradle assembleDebug --stacktrace
       - name: Collect APKs
