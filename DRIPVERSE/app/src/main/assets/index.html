@@ -92,18 +92,67 @@ function equip(cat,i){
 }
 function renderEquippedClothes(){
  const palette=['#24212d','#eee9f4','#c33f64','#2869a7','#d6a52d','#397b5c','#8051a7','#151515','#f078a8','#b6b6c5'];
- const chosen=Object.entries(state.look||{}); 
- const find=(cat)=>chosen.find(x=>x[0]===cat)?.[1]||'';
+ const find=(cat)=>state.look?.[cat]||'';
  const colorFor=(s)=>{let n=0;for(let i=0;i<s.length;i++)n=(n+s.charCodeAt(i))%palette.length;return palette[n];};
- const shirt=find('Camisas'), pants=find('Calças'), shoes=find('Sapatos')||find('Sandálias')||find('Kenner');
- let top='',bottom='',foot='',acc='';
- if(shirt){let c=colorFor(shirt);top=`<path d="M78 158 Q96 145 112 158 L142 181 L163 245 L144 273 L134 245 L137 357 Q140 374 125 380 L74 380 Q59 374 63 357 L66 245 L54 273 L35 245 L52 181Z" fill="${c}" stroke="#201a2c" stroke-width="5" stroke-linejoin="round"/><path d="M78 160 Q95 177 112 160" fill="none" stroke="#f8eafa" stroke-width="4"/><path d="M73 205 L126 205" stroke="#ffffff66" stroke-width="3"/>`;}
- if(pants){let c=colorFor(pants);bottom=`<path d="M64 365 Q96 376 137 365 L142 485 L119 485 L101 425 L82 485 L58 485Z" fill="${c}" stroke="#201a2c" stroke-width="5" stroke-linejoin="round"/><path d="M66 382 L136 382" stroke="#ffffff88" stroke-width="4"/>`;}
- if(shoes){let c=colorFor(shoes);foot=`<path d="M54 748 Q72 740 91 750 L92 778 Q76 787 39 780 Q36 765 54 748Z M177 748 Q198 740 215 750 L237 778 Q218 789 181 780Z" fill="${c}" stroke="#201a2c" stroke-width="5"/>`;}
- if(find('Tatuagens'))acc+=`<path d="M35 300 q18 -25 28 2 q-15 24 -28 -2 M217 300 q-18 -25 -28 2 q15 24 28 -2" fill="none" stroke="#222" stroke-width="5"/>`;
- if(find('Piercings'))acc+=`<circle cx="83" cy="111" r="5" fill="#f5d36e" stroke="#8a5b21" stroke-width="2"/><circle cx="197" cy="111" r="5" fill="#f5d36e" stroke="#8a5b21" stroke-width="2"/>`;
- if(find('Acessórios'))acc+=`<path d="M80 160 Q95 195 112 160" fill="none" stroke="#f6d36d" stroke-width="7"/>`;
- if(find('Dentes'))acc+=`<path d="M119 130 h18 v7 h-18z" fill="#f6d36d" stroke="#fff" stroke-width="1"/>`;
+ const shirt=find('Camisas'), pants=find('Calças'), shoe=find('Sapatos')||find('Sandálias')||find('Kenner');
+ let top='',bottom='',foot='',acc='',c,n;
+ const edge='#241c2e',gold='#f5d36d';
+ if(shirt){
+  c=colorFor(shirt);n=shirt.toLowerCase();
+  const sleeveless=n.includes('regata'), crop=n.includes('cropped'), hoodie=n.includes('moletom'), varsity=n.includes('varsity'), social=n.includes('social'), polo=n.includes('polo'), puff=n.includes('puffer');
+  const hem=crop?318:370;
+  top='<path d="M101 165 Q140 143 179 165 L202 177 L235 244 L213 267 L189 226 L184 '+hem+' L96 '+hem+' L91 226 L67 267 L45 244 L78 177Z" fill="'+c+'" stroke="'+edge+'" stroke-width="5" stroke-linejoin="round"/>';
+  if(sleeveless) top+='<path d="M101 165 Q112 181 119 195 M179 165 Q168 181 161 195" fill="none" stroke="'+edge+'" stroke-width="5"/>';
+  else top+='<path d="M45 244 L67 267 M235 244 L213 267" stroke="'+edge+'" stroke-width="5"/>';
+  if(social) top+='<path d="M120 157 L140 185 L160 157 L151 210 L140 198 L129 210Z" fill="#f5f0f7" stroke="'+edge+'" stroke-width="3"/><path d="M140 185 V'+hem+'" stroke="#f5f0f7" stroke-width="4"/>';
+  else if(polo) top+='<path d="M120 157 L140 184 L160 157 L151 204 L140 194 L129 204Z" fill="#f4f0f6" stroke="'+edge+'" stroke-width="3"/><path d="M140 198 V255" stroke="#f4f0f6" stroke-width="3"/>';
+  else top+='<path d="M119 159 Q140 181 161 159" fill="none" stroke="#f6eaf4" stroke-width="5"/>';
+  if(hoodie) top+='<path d="M111 160 Q140 124 169 160 L158 194 Q140 177 122 194Z" fill="'+c+'" stroke="'+edge+'" stroke-width="5"/><path d="M130 194 L126 244 M150 194 L154 244" stroke="#f4e9f4" stroke-width="3"/><path d="M111 294 Q140 278 169 294 L169 337 Q140 348 111 337Z" fill="none" stroke="'+edge+'" stroke-width="4"/>';
+  if(puff||hoodie) top+='<path d="M101 235 H179 M99 270 H181 M99 305 H181" stroke="#ffffff66" stroke-width="4"/>';
+  if(varsity) top+='<path d="M49 244 L66 254 M231 244 L214 254" stroke="#f4e9f4" stroke-width="9"/><path d="M140 188 V'+hem+'" stroke="#f4e9f4" stroke-width="4"/>';
+  if(n.includes('gráfica')) top+='<path d="M119 235 L140 214 L161 235 L140 256Z" fill="'+gold+'" stroke="'+edge+'" stroke-width="3"/><text x="140" y="242" text-anchor="middle" font-size="12" font-weight="900" fill="'+edge+'">D</text>';
+  if(!social&&!polo) top+='<path d="M110 '+(hem-35)+' H170" stroke="#ffffff66" stroke-width="3"/>';
+ }
+ if(pants){
+  c=colorFor(pants);n=pants.toLowerCase();
+  const shorts=n.includes('shorts')||n.includes('bermuda'), cargo=n.includes('cargo'), ripped=n.includes('rasgado'), flare=n.includes('flare');
+  const end=shorts?510:715;
+  bottom='<path d="M96 360 Q140 375 184 360 L181 '+end+' L145 '+end+' L140 445 L135 '+end+' L99 '+end+'Z" fill="'+c+'" stroke="'+edge+'" stroke-width="5" stroke-linejoin="round"/><path d="M140 385 V'+(end-5)+'" stroke="#ffffff55" stroke-width="3"/>';
+  if(cargo) bottom+='<path d="M101 475 H130 V535 H101Z M151 475 H179 V535 H151Z" fill="'+c+'" stroke="'+edge+'" stroke-width="4"/><path d="M105 488 H126 M155 488 H175" stroke="#ffffff88" stroke-width="3"/>';
+  if(ripped) bottom+='<path d="M105 545 L130 558 L112 568 L133 581 M151 610 L176 623 L157 635 L179 646" fill="none" stroke="#eee9f4" stroke-width="7"/>';
+  if(n.includes('jeans')) bottom+='<path d="M105 382 H175 M140 385 V430" stroke="#b9d8f5" stroke-width="3"/>';
+  if(n.includes('jogger')||n.includes('esportiva')) bottom+='<path d="M99 '+(end-18)+' H135 M145 '+(end-18)+' H181" stroke="#f5f0f7" stroke-width="7"/>';
+  if(flare&&!shorts) bottom+='<path d="M99 670 L88 720 H143 L140 670 M145 670 L140 720 H192 L181 670" fill="'+c+'" stroke="'+edge+'" stroke-width="4"/>';
+ }
+ if(shoe){
+  c=colorFor(shoe);n=shoe.toLowerCase();
+  if(n.includes('kenner')||n.includes('slide')||n.includes('chinelo')||n.includes('sandália')||n.includes('papete')){
+   foot='<path d="M91 716 Q111 710 132 724 L134 764 Q112 779 72 765 Q70 744 91 716Z M148 724 Q169 710 189 716 Q210 744 208 765 Q168 779 146 764Z" fill="'+c+'" stroke="'+edge+'" stroke-width="5"/><path d="M83 739 Q110 725 130 745 M150 745 Q170 725 197 739" fill="none" stroke="'+gold+'" stroke-width="11" stroke-linecap="round"/>';
+   if(n.includes('kenner')) foot+='<text x="107" y="758" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">K</text><text x="173" y="758" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">K</text>';
+  }else foot='<path d="M91 710 Q111 704 132 720 L135 754 Q125 774 72 770 Q60 752 91 710Z M148 720 Q169 704 189 710 Q220 752 208 770 Q155 774 145 754Z" fill="'+c+'" stroke="'+edge+'" stroke-width="5"/><path d="M78 755 Q105 744 132 758 M148 758 Q175 744 202 755" stroke="#f4f0f6" stroke-width="5"/><path d="M105 723 L125 747 M175 723 L155 747" stroke="'+gold+'" stroke-width="4"/>';
+ }
+ if(find('Maquiagens')){
+  n=find('Maquiagens').toLowerCase();
+  acc+='<path d="M101 94 Q116 84 130 95 M150 95 Q164 84 179 94" fill="none" stroke="'+(n.includes('gloss')?'#e95b91':'#9c3974')+'" stroke-width="5" stroke-linecap="round"/>';
+  if(n.includes('delineado')||n.includes('editorial')||n.includes('neon')) acc+='<path d="M100 99 L126 105 L136 99 M144 99 L154 105 L180 99" fill="none" stroke="#17111f" stroke-width="5"/><path d="M102 87 L91 80 M178 87 L189 80" stroke="#ff4fa3" stroke-width="3"/>';
+  if(n.includes('gloss')||n.includes('batom')) acc+='<path d="M124 130 Q140 123 156 130 Q140 145 124 130Z" fill="'+(n.includes('vinho')?'#8d1744':'#ee6e9c')+'" stroke="#7e3154" stroke-width="2"/>';
+  if(n.includes('blush')||n.includes('glam')) acc+='<ellipse cx="91" cy="119" rx="12" ry="6" fill="#f07a9c" opacity=".55"/><ellipse cx="189" cy="119" rx="12" ry="6" fill="#f07a9c" opacity=".55"/>';
+  if(n.includes('pedrarias')) acc+='<circle cx="99" cy="88" r="4" fill="'+gold+'"/><circle cx="181" cy="88" r="4" fill="'+gold+'"/><circle cx="140" cy="77" r="4" fill="#d7f4ff"/>';
+ }
+ if(find('Acessórios')){
+  n=find('Acessórios').toLowerCase();
+  if(n.includes('óculos')) acc+='<g fill="none" stroke="'+gold+'" stroke-width="5"><rect x="91" y="82" width="38" height="25" rx="8"/><rect x="151" y="82" width="38" height="25" rx="8"/><path d="M129 93 H151"/></g>';
+  else if(n.includes('boné')) acc+='<path d="M92 66 Q140 23 188 66 L190 81 H90Z M140 72 Q186 70 207 83 Q180 94 140 83Z" fill="'+colorFor(find('Acessórios'))+'" stroke="'+edge+'" stroke-width="4"/>';
+  else acc+='<path d="M103 165 Q140 205 177 165" fill="none" stroke="'+gold+'" stroke-width="7"/><path d="M140 190 L140 205" stroke="'+gold+'" stroke-width="4"/><circle cx="140" cy="207" r="7" fill="#e9f5ff" stroke="'+gold+'" stroke-width="2"/>';
+ }
+ if(find('Tatuagens')) acc+='<path d="M53 282 Q70 260 83 286 Q69 310 53 282 M227 282 Q210 260 197 286 Q211 310 227 282" fill="none" stroke="#29202b" stroke-width="5"/><path d="M112 408 l10 14 -10 14 18 -7 18 7 -10 -14 10 -14 -18 7Z" fill="none" stroke="#29202b" stroke-width="3"/>';
+ if(find('Cabelos')){
+  n=find('Cabelos').toLowerCase();c=colorFor(find('Cabelos'));
+  if(n.includes('trança')||n.includes('dread')||n.includes('twist')) acc+='<path d="M94 47 Q75 95 93 151 M186 47 Q205 95 187 151" fill="none" stroke="'+c+'" stroke-width="13" stroke-linecap="round"/><path d="M90 70 L100 77 M190 70 L180 77 M91 100 L101 107 M189 100 L179 107" stroke="'+gold+'" stroke-width="3"/>';
+  else acc+='<path d="M91 72 Q91 20 140 24 Q189 20 189 72 Q169 49 151 50 Q119 45 91 72Z" fill="'+c+'" stroke="'+edge+'" stroke-width="4"/>';
+ }
+ if(find('Piercings')) acc+='<circle cx="92" cy="111" r="5" fill="'+gold+'" stroke="#8a5b21" stroke-width="2"/><circle cx="188" cy="111" r="5" fill="'+gold+'" stroke="#8a5b21" stroke-width="2"/><path d="M134 130 Q140 139 146 130" fill="none" stroke="'+gold+'" stroke-width="3"/>';
+ if(find('Dentes')) acc+='<path d="M130 132 H150 V139 H130Z" fill="'+(find('Dentes').toLowerCase().includes('ouro')?'#e8b92f':'#f7f4ff')+'" stroke="'+gold+'" stroke-width="2"/>';
  $('topClothes').innerHTML=top;$('bottomClothes').innerHTML=bottom;$('shoeClothes').innerHTML=foot;$('accessoryClothes').innerHTML=acc;
 }
 function randomLook(){Object.keys(categories).forEach(c=>{let a=allItems(c);let it=a[Math.floor(Math.random()*a.length)];state.look[c]=it.name});$('avatarLabel').textContent='Look aleatório completo';persist();toast('Look sorteado! Abra as categorias para ajustar.')}
