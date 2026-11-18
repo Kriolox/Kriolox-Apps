@@ -127,7 +127,7 @@ function renderEquippedClothes(){
  if(shoe){
   c=colorFor(shoe);n=shoe.toLowerCase();
   if(n.includes('kenner')||n.includes('slide')||n.includes('chinelo')||n.includes('sandália')||n.includes('papete')){
-   foot='<path d="M98 744 Q114 738 130 748 L130 770 Q111 777 87 768 Q87 754 98 744Z M150 748 Q166 738 182 744 Q193 754 193 768 Q169 777 150 770Z" fill="'+c+'" stroke="'+edge+'" stroke-width="3"/><path d="M96 752 Q111 746 128 758 M152 758 Q169 746 184 752" fill="none" stroke="'+gold+'" stroke-width="7" stroke-linecap="round"/><path d="M108 747 L116 764 M172 747 L164 764" stroke="'+edge+'" stroke-width="2"/>
+   foot='<path d="M98 744 Q114 738 130 748 L130 770 Q111 777 87 768 Q87 754 98 744Z M150 748 Q166 738 182 744 Q193 754 193 768 Q169 777 150 770Z" fill="'+c+'" stroke="'+edge+'" stroke-width="3"/><path d="M96 752 Q111 746 128 758 M152 758 Q169 746 184 752" fill="none" stroke="'+gold+'" stroke-width="7" stroke-linecap="round"/><path d="M108 747 L116 764 M172 747 L164 764" stroke="'+edge+'" stroke-width="2"/>';
    if(n.includes('kenner')) foot+='<text x="107" y="758" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">K</text><text x="173" y="758" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">K</text>';
   }else foot='<path d="M91 710 Q111 704 132 720 L135 754 Q125 774 72 770 Q60 752 91 710Z M148 720 Q169 704 189 710 Q220 752 208 770 Q155 774 145 754Z" fill="'+c+'" stroke="'+edge+'" stroke-width="5"/><path d="M78 755 Q105 744 132 758 M148 758 Q175 744 202 755" stroke="#f4f0f6" stroke-width="5"/><path d="M105 723 L125 747 M175 723 L155 747" stroke="'+gold+'" stroke-width="4"/>';
  }
