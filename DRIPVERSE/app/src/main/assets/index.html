@@ -98,7 +98,7 @@ function startBattle(){if(window.dripverseOnlineStart)window.dripverseOnlineStar
 function vote(uid){if(window.dripverseOnlineVote)window.dripverseOnlineVote(uid)}
 function renderShop(){$('shopGrid').innerHTML='<div class="card"><h3>🎨 Loja em preparação</h3><p class="muted">Nenhuma roupa está à venda. Você vai definir cada desenho, classe e preço antes de entrar na loja.</p></div>'}
 function buy(){toast('A loja será ativada quando você cadastrar suas peças.')}
-function renderBoard(){$('leaderboard').innerHTML=['Você','LunaVibe','KauãDrip','MikaStar','NeoStyle','DudaX','Rafa.exe','NinaGlow','Teteu','BiaLux'].map((n,i)=>`<div class="item"><span>${i+1}. ${n}</span><b>${i===0?state.wins:Math.max(0,12-i*2)} vitórias</b></div>`).join('')}
+function renderBoard(){$('leaderboard').innerHTML=`<div class="item"><span>Você</span><b>${state.wins} vitórias</b></div><p class="muted small">A classificação global será preenchida com resultados de partidas reais quando o placar online for ativado.</p>`}
 function premiumDemo(){let now=new Date();if(!(now.getMonth()===11&&now.getDate()===31&&now.getHours()>=18)){toast('A votação premium abre em 31 de dezembro às 18h.');return}let finalists=['Você','LunaVibe','KauãDrip','MikaStar','NeoStyle','DudaX','Rafa.exe','NinaGlow','Teteu','BiaLux'];let winner=finalists[Math.floor(Math.random()*10)];$('premiumResult').innerHTML=`<div class="card"><h2>🏆 ${winner} venceu!</h2><p>Prêmio demonstrativo: 1.000.000 moedas + 5 itens gratuitos.</p><p class="muted small">A simulação não credita o prêmio real. O evento oficial depende de servidor, contas verificadas e votação ao vivo.</p></div>`}
 function openLogin(){
  $('loginModal').style.display='grid';
@@ -123,7 +123,7 @@ setInterval(()=>{checkAnnualTheme();let now=new Date(),start=new Date(now.getFul
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, addDoc, query, where, orderBy, limit, onSnapshot, runTransaction, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, addDoc, query, where, limit, onSnapshot, runTransaction, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBECO3EyfmoyNE5ARvhZXv6VOOQb4Dk",
@@ -205,7 +205,7 @@ window.dripverseOnlineStart=async()=>{
   onlineStatus('Conectando à fila ao vivo…');
   onlineQueueRef=await addDoc(collection(db,'matchQueue'),{uid:currentUser.uid,name:currentUser.displayName||currentUser.email?.split('@')[0]||'Jogador',status:'waiting',createdAt:serverTimestamp()});
   onlineStatus('Na fila! Procurando '+(wanted-1)+' a '+(wanted-1)+' jogadores…');
-  onlineQueueListUnsub=onSnapshot(query(collection(db,'matchQueue'),where('status','==','waiting'),orderBy('createdAt','asc'),limit(5)),async snap=>{
+  onlineQueueListUnsub=onSnapshot(query(collection(db,'matchQueue'),where('status','==','waiting'),limit(5)),async snap=>{
    const entries=snap.docs.map(d=>({id:d.id,...d.data()}));
    const area=document.getElementById('battleArea');
    if(area&&!onlineMatchId)area.innerHTML='<div class="card" style="grid-column:1/-1"><h3>Jogadores na fila: '+entries.length+'</h3><p class="muted">'+entries.map(p=>safeText(p.name)).join(' • ')+'</p><p class="small muted">A partida abre quando houver '+wanted+' participantes.</p></div>';
