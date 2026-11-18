@@ -221,9 +221,10 @@ window.dripverseOnlineStart=async()=>{
     });}catch(e){onlineStatus('Erro ao formar partida: '+e.message);}
    }
   },err=>{onlineStatus('Erro na fila: '+err.message);});
-  onlineQueueUnsub=onSnapshot(query(collection(db,'matches'),where('queueIds','array-contains',onlineQueueRef.id),limit(1)),snap=>{
-   if(snap.empty)return;
-   const matchDoc=snap.docs[0];onlineMatchId=matchDoc.id;
+  onlineQueueUnsub=onSnapshot(query(collection(db,'matches'),where('playerUids','array-contains',currentUser.uid),limit(10)),snap=>{
+   const matchDoc=snap.docs.find(d=>(d.data().queueIds||[]).includes(onlineQueueRef?.id));
+   if(!matchDoc)return;
+   onlineMatchId=matchDoc.id;
    onlineQueueListUnsub?.();onlineQueueListUnsub=null;
    onlineQueueUnsub?.();onlineQueueUnsub=null;
    if(onlineQueueRef){deleteDoc(onlineQueueRef).catch(()=>{});onlineQueueRef=null;}
