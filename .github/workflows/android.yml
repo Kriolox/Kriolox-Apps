@@ -38,8 +38,9 @@ jobs:
           mkdir -p output
           cp Kriolox/app/build/outputs/apk/debug/app-debug.apk output/Kriolox.apk
           cp KrioloxStudio/app/build/outputs/apk/debug/app-debug.apk output/Kriolox-Studio.apk
+          cp DRIPVERSE/app/build/outputs/apk/debug/app-debug.apk output/DRIPVERSE.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: Kriolox-Android-APKs
+          name: Android-APKs
           path: output/*.apk
           if-no-files-found: error
