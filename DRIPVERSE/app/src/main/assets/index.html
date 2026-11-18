@@ -93,7 +93,7 @@ function equip(cat,i){
 function renderEquippedClothes(){
  const palette=['#24212d','#eee9f4','#c33f64','#2869a7','#d6a52d','#397b5c','#8051a7','#151515','#f078a8','#b6b6c5'];
  const find=(cat)=>state.look?.[cat]||'';
- const colorFor=(s)=>{const v=s.toLowerCase();const colors={'preto':'#17151b','branco':'#f3f0e9','rosa':'#e95b9a','vermelho':'#c83243','azul':'#2874bd','verde':'#258653','roxo':'#8050ad','dourado':'#d5a52d','prata':'#aeb7c4','neon':'#a7df27'};for(const k of Object.keys(colors)){if(new RegExp('\\\\b'+k+'\\\\b').test(v))return colors[k];}return palette[0];};
+ const colorFor=(s)=>{const v=s.toLowerCase();const colors={'preto':'#17151b','branco':'#f3f0e9','rosa':'#e95b9a','vermelho':'#c83243','azul':'#2874bd','verde':'#258653','roxo':'#8050ad','dourado':'#d5a52d','prata':'#aeb7c4','neon':'#a7df27'};for(const k of Object.keys(colors)){if(v.includes(k))return colors[k];}return palette[0];};
  const shirt=find('Camisas'), pants=find('Calças'), shoe=find('Sapatos')||find('Sandálias')||find('Kenner');
  let top='',bottom='',foot='',acc='',c,n;
  const edge='#241c2e',gold='#f5d36d';
